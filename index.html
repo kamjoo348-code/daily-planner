@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#0F766E">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<title>پلنر روزانه</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&display=swap">
+<style>
+:root{--bg:#F2F4F0;--card:#FFFFFF;--text:#14232B;--muted:#6A7A80;--line:#D5DBD3;--ok:#0F766E;--okbg:#D6EEEA;--mark:#E9A23B;--danger:#B42318;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F1A1F;--card:#17262D;--text:#E8EEEA;--muted:#93A4A9;--line:#2B3D45;--ok:#2DD4BF;--okbg:#12403F;--mark:#F2B24D;--danger:#F97066;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0F1A1F;--card:#17262D;--text:#E8EEEA;--muted:#93A4A9;--line:#2B3D45;--ok:#2DD4BF;--okbg:#12403F;--mark:#F2B24D;--danger:#F97066;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:"Vazirmatn",Tahoma,"Segoe UI",sans-serif;font-size:16px;line-height:1.6;padding-bottom:84px}
+button{font:inherit;color:inherit;cursor:pointer}
+main{max-width:520px;margin:0 auto;padding:14px 16px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}
+.top h1{margin:0;font-size:22px;font-weight:800;text-align:center;flex:1}
+.top h1 small{display:block;font-size:13px;font-weight:400;color:var(--muted)}
+.nav{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:var(--card);font-size:22px;line-height:1}
+.strip{display:flex;gap:6px;overflow-x:auto;padding:4px 2px 10px;scrollbar-width:none}
+.strip::-webkit-scrollbar{display:none}
+.day{position:relative;flex:0 0 46px;height:64px;border:1px solid var(--line);border-radius:12px;background:var(--card);overflow:hidden;font-weight:600;padding:0}
+.day i{position:absolute;inset:auto 0 0 0;background:var(--okbg);display:block;height:0}
+.day span{position:relative}
+.day.sel{border:2px solid var(--ok);color:var(--ok)}
+.day.now::after{content:"";position:absolute;top:5px;left:50%;width:6px;height:6px;margin-left:-3px;border-radius:50%;background:var(--mark)}
+.sum{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:6px 0 12px}
+.sum b{font-size:15px}
+.bar{height:8px;border-radius:4px;background:var(--line);overflow:hidden;margin-top:8px}
+.bar i{display:block;height:100%;background:var(--ok);border-radius:4px;transition:width .25s}
+.task{display:flex;align-items:center;gap:12px;width:100%;min-height:58px;padding:10px 14px;margin-bottom:8px;background:var(--card);border:1px solid var(--line);border-radius:14px;text-align:right}
+.chk{flex:0 0 28px;height:28px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;color:#fff;font-size:16px;font-weight:800}
+.task.on .chk{background:var(--ok);border-color:var(--ok)}
+.task.on .nm{color:var(--muted);text-decoration:line-through}
+.nm{flex:1;overflow-wrap:anywhere}
+.del{flex:0 0 auto;border:0;background:none;color:var(--danger);font-size:14px;font-weight:600;padding:6px}
+.add{display:flex;gap:8px;margin-top:14px}
+.add input{flex:1;min-width:0;height:48px;border:1px solid var(--line);border-radius:12px;padding:0 14px;background:var(--card);color:var(--text);font:inherit}
+.btn{height:48px;padding:0 18px;border:0;border-radius:12px;background:var(--ok);color:#fff;font-weight:600}
+:root:not([data-theme="light"]) .btn{color:#06201E}
+.link{display:block;margin:14px auto 0;border:0;background:none;color:var(--muted);font-size:14px;text-decoration:underline}
+.empty{text-align:center;color:var(--muted);padding:28px 8px}
+.row{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:8px}
+.row div{display:flex;justify-content:space-between;gap:8px}
+.cols{display:flex;align-items:flex-end;gap:2px;height:90px;margin-top:8px}
+.cols i{flex:1;background:var(--ok);border-radius:2px 2px 0 0;min-height:2px;opacity:.85}
+.cols i.z{background:var(--line)}
+h2{font-size:16px;margin:16px 0 8px}
+.tabs{position:fixed;inset:auto 0 0 0;display:flex;background:var(--card);border-top:1px solid var(--line);padding:6px 12px calc(6px + env(safe-area-inset-bottom,0px))}
+.tabs button{flex:1;height:48px;border:0;background:none;font-weight:600;color:var(--muted);border-radius:12px}
+.tabs button.act{color:var(--ok);background:var(--okbg)}
+:focus-visible{outline:3px solid var(--mark);outline-offset:2px}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<nav class="tabs"><button id="t1" onclick="setTab('today')">امروز</button><button id="t2" onclick="setTab('stats')">آمار ماه</button></nav>
+<script>
+var KEY='planner_v1',S=null,tab='today',edit=false;
+try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+if(!S||!S.tasks)S={tasks:[{id:1,n:'مطالعه ۳۰ دقیقه'},{id:2,n:'ورزش'},{id:3,n:'نوشیدن ۸ لیوان آب'}],done:{},nid:4};
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+var MN=['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
+function fa(n){return Number(n).toLocaleString('fa-IR',{useGrouping:false})}
+function esc(s){return s.replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function getToday(){try{var p=new Intl.DateTimeFormat('fa-IR-u-ca-persian-nu-latn',{year:'numeric',month:'numeric',day:'numeric'}).formatToParts(new Date());var g=function(t){return parseInt(p.filter(function(x){return x.type===t})[0].value,10)};var r={y:g('year'),m:g('month'),d:g('day')};if(r.y>1300&&r.m&&r.d)return r}catch(e){}return{y:1405,m:1,d:1}}
+var T=getToday(),vy=T.y,vm=T.m,vd=T.d;
+function mlen(y,m){return m<=6?31:m<=11?30:([1,5,9,13,17,22,26,30].indexOf(y%33)>-1?30:29)}
+function key(){return vy+'-'+vm}
+function days(id){var k=S.done[key()]||{};return k[id]||[]}
+function isOn(id,d){return days(id).indexOf(d)>-1}
+function toggle(id){var k=key();S.done[k]=S.done[k]||{};var a=S.done[k][id]||[];var i=a.indexOf(vd);if(i>-1)a.splice(i,1);else a.push(vd);S.done[k][id]=a;save();render()}
+function dayCount(d){var n=0;S.tasks.forEach(function(t){if(isOn(t.id,d))n++});return n}
+function pick(d){vd=d;render()}
+function shift(n){vm+=n;if(vm>12){vm=1;vy++}if(vm<1){vm=12;vy--}vd=(vy===T.y&&vm===T.m)?T.d:1;render()}
+function setTab(t){tab=t;render()}
+function addTask(){var el=document.getElementById('nt');var v=el.value.trim();if(!v)return;S.tasks.push({id:S.nid++,n:v});save();render()}
+function delTask(id){if(!confirm('این کار و سابقه‌اش حذف شود؟'))return;S.tasks=S.tasks.filter(function(t){return t.id!==id});save();render()}
+function head(){return '<div class="top"><button class="nav" aria-label="ماه قبل" onclick="shift(-1)">›</button><h1>'+MN[vm-1]+' '+fa(vy)+'<small>'+(tab==='today'?'پلنر روزانه':'آمار ماه')+'</small></h1><button class="nav" aria-label="ماه بعد" onclick="shift(1)">‹</button></div>'}
+function render(){
+  var len=mlen(vy,vm),nT=S.tasks.length,h=head();
+  document.getElementById('t1').className=tab==='today'?'act':'';
+  document.getElementById('t2').className=tab==='stats'?'act':'';
+  if(tab==='today'){
+    h+='<div class="strip" id="strip">';
+    for(var d=1;d<=len;d++){var f=nT?Math.round(dayCount(d)/nT*100):0;
+      h+='<button class="day'+(d===vd?' sel':'')+((vy===T.y&&vm===T.m&&d===T.d)?' now':'')+'" onclick="pick('+d+')" aria-label="روز '+fa(d)+'"><i style="height:'+f+'%"></i><span>'+fa(d)+'</span></button>'}
+    h+='</div>';
+    var dn=dayCount(vd),pc=nT?Math.round(dn/nT*100):0;
+    h+='<div class="sum"><div style="display:flex;justify-content:space-between"><b>'+fa(vd)+' '+MN[vm-1]+'</b><b>'+fa(dn)+' از '+fa(nT)+' کار</b></div><div class="bar"><i style="width:'+pc+'%"></i></div></div>';
+    if(!nT)h+='<div class="empty">هنوز کاری اضافه نکرده‌ای. اولین کار را پایین بنویس.</div>';
+    S.tasks.forEach(function(t){var on=isOn(t.id,vd);
+      h+='<div style="display:flex;gap:6px;align-items:stretch"><button class="task'+(on?' on':'')+'" onclick="toggle('+t.id+')" role="checkbox" aria-checked="'+on+'"><span class="chk">'+(on?'✓':'')+'</span><span class="nm">'+esc(t.n)+'</span></button>'+(edit?'<button class="del" onclick="delTask('+t.id+')">حذف</button>':'')+'</div>'});
+    h+='<div class="add"><input id="nt" placeholder="کار جدید…" maxlength="60" onkeydown="if(event.key===\'Enter\')addTask()"><button class="btn" onclick="addTask()">افزودن</button></div>';
+    h+='<button class="link" onclick="edit=!edit;render()">'+(edit?'تمام شد':'حذف کارها')+'</button>';
+  }else{
+    var el=(vy===T.y&&vm===T.m)?T.d:len,tot=0;
+    S.tasks.forEach(function(t){tot+=days(t.id).length});
+    var all=nT&&el?Math.round(tot/(nT*el)*100):0;
+    h+='<div class="sum"><b>میانگین انجام کارها: '+fa(all)+'٪</b><div class="bar"><i style="width:'+all+'%"></i></div><div style="color:var(--muted);font-size:13px;margin-top:6px">محاسبه تا روز '+fa(el)+' ماه</div></div>';
+    h+='<h2>هر کار در این ماه</h2>';
+    if(!nT)h+='<div class="empty">برای دیدن آمار، اول در برگهٔ «امروز» کار اضافه کن.</div>';
+    S.tasks.forEach(function(t){var c=days(t.id).length,p=el?Math.round(c/el*100):0;
+      h+='<div class="row"><div><span>'+esc(t.n)+'</span><b>'+fa(c)+' از '+fa(el)+' روز</b></div><div class="bar"><i style="width:'+Math.min(p,100)+'%"></i></div></div>'});
+    h+='<h2>روند روزانه</h2><div class="row"><div class="cols">';
+    for(var d=1;d<=len;d++){var q=nT?dayCount(d)/nT*100:0;h+='<i class="'+(q?'':'z')+'" style="height:'+Math.max(q,3)+'%" title="'+fa(d)+'"></i>'}
+    h+='</div><div style="color:var(--muted);font-size:12px;margin-top:6px"><span>۱</span><span>'+fa(len)+'</span></div></div>';
+  }
+  document.getElementById('app').innerHTML=h;
+  var s=document.querySelector('.day.sel');if(s&&tab==='today')s.scrollIntoView({inline:'center',block:'nearest'});
+}
+render();
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('./service-worker.js').catch(function (err) {
+      console.warn('Service worker registration failed:', err);
+    });
+  });
+}
+</script>
+</body>
+</html>
