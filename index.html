@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0F766E">
+<meta name="description" content="پلنر روزانه برای برنامه‌ریزی و پیگیری عادت‌ها">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+<link rel="apple-touch-icon" href="./icons/icon-180.png">
 <title>پلنر روزانه</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&display=swap">
 <style>
@@ -123,6 +128,19 @@ function render(){
   var s=document.querySelector('.day.sel');if(s&&tab==='today')s.scrollIntoView({inline:'center',block:'nearest'});
 }
 render();
+</script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("./service-worker.js", { updateViaCache: "none" })
+      .then(function (registration) {
+        registration.update().catch(function () {});
+      })
+      .catch(function (error) {
+        console.error("Service worker registration failed:", error);
+      });
+  });
+}
 </script>
 </body>
 </html>
